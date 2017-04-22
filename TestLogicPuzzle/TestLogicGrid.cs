@@ -42,5 +42,11 @@ namespace TestLogicPuzzle
             Assert.False(_grid[Fish.Haddock, Currency.KRW]);
             Assert.False(_grid[Fish.Cod, Currency.EUR]);
         }
+
+        [Fact]
+        public void ATestWhichObviouslyFails()
+        {
+            Assert.True(false);
+        }
     }
 }

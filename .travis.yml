@@ -1,5 +1,12 @@
 language: csharp
 solution: jigsaw.sln
+matrix:
+  include:
+    - dotnet: 1.0.1
+      mono: none
+      dist: trusty
+      env: DOTNETCORE=1
+    - mono: latest
 install:
   - nuget restore jigsaw.sln
 script:

@@ -1,2 +1,7 @@
 language: csharp
 solution: jigsaw.sln
+install:
+  - nuget restore jigsaw.sln
+script:
+  - xbuild /p:Configuration=Release jigsaw.sln
+  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./TestLogicPuzzle/bin/Release/TestLogicPuzzle.dll

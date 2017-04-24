@@ -1,4 +1,6 @@
-﻿using LogicPuzzle;
+﻿using System.Collections.Generic;
+
+using LogicPuzzle;
 using Xunit;
 
 namespace TestLogicPuzzle
@@ -41,6 +43,16 @@ namespace TestLogicPuzzle
             Assert.True(_grid[Fish.Haddock, Currency.EUR]);
             Assert.False(_grid[Fish.Haddock, Currency.KRW]);
             Assert.False(_grid[Fish.Cod, Currency.EUR]);
+        }
+
+        [Fact]
+        public void TestSetFourFalse()
+        {
+            _grid = new LogicGrid<Fish, Currency>();
+            foreach (Fish fish in new List<Fish>{Fish.Cod, Fish.Flake, Fish.Plaice, Fish.Rock}) {
+                _grid[fish, Currency.EUR] = false;
+            }
+            Assert.True(_grid[Fish.Haddock, Currency.EUR]);
         }
     }
 }

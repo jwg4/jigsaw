@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LogicPuzzle
 {
-    public class LogicGrid<T, U> : Dictionary<Tuple<T, U>, bool?>
+    public class LogicGrid<T, U> : Dictionary<Tuple<T, U>, bool?> where T: struct where U: struct
     {
         public void SetFalse(T t, U u)
         {
@@ -34,6 +35,42 @@ namespace LogicPuzzle
                     }
                 }
             }
+        }
+
+        private void updateValues(){
+            foreach (T t in Enum.GetValues(typeof(T))) {
+                var values = ((IEnumerable<U>)Enum.GetValues(typeof(U)))
+                    .Select(u => new Tuple<U, bool?>(u, this[t, u]));
+                var allFalse = allFalseP(values);
+                if (allFalse.Item1) {
+                    this[t, (U)allFalse.Item2] = true;
+                }
+                var oneTrue = oneTrueP(values);
+                if (oneTrue.Item1) {
+                    foreach (U u in Enum.GetValues(typeof(U))) {
+                        if (! u.Equals(oneTrue.Item2)) {
+                            this[t, u] = false;
+                        }                        
+                    }
+                }
+            }  
+        }
+
+        private static Tuple<bool, V?> allFalseP<V>(IEnumerable<Tuple<V, bool?>> values) where V: struct {
+            int count = values.Count();
+            int countFalse = values.Count(x => x.Item2 == false);
+            if (count == countFalse + 1) {
+                return new Tuple<bool, V?>(true, values.First(x => x.Item2 != false).Item1);
+            }
+            return new Tuple<bool, V?>(false, null);
+        }
+
+        private static Tuple<bool, V?> oneTrueP<V>(IEnumerable<Tuple<V, bool?>> values) where V: struct {
+            int countTrue = values.Count(x => x.Item2 == true);
+            if (countTrue == 1) {
+                return new Tuple<bool, V?>(true, values.First(x => x.Item2 == true).Item1);
+            }
+            return new Tuple<bool, V?>(false, null);
         }
     }
 }

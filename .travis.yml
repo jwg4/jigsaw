@@ -8,3 +8,7 @@ install:
 script:
   - cd TestLogicPuzzle
   - dotnet test
+notifications:
+  email:
+    on_success: never
+    on_failure: change

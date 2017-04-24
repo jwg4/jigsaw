@@ -6,6 +6,14 @@ namespace LogicPuzzle
 {
     public class LogicGrid<T, U> : Dictionary<Tuple<T, U>, bool?> where T: struct where U: struct
     {
+        public LogicGrid(){
+            foreach (T t in Enum.GetValues(typeof(T))) {
+                foreach (U u in Enum.GetValues(typeof(U))) {
+                    this[t, u] = null;
+                }
+            }
+        }
+
         public void SetFalse(T t, U u)
         {
             this[new Tuple<T, U>(t, u)] = false;

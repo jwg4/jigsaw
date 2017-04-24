@@ -63,6 +63,22 @@ namespace LogicPuzzle
                     }
                 }
             }  
+            foreach (U u in Enum.GetValues(typeof(U))) {
+                var values = ((IEnumerable<T>)Enum.GetValues(typeof(T)))
+                    .Select(t => new Tuple<T, bool?>(t, this[t, u]));
+                var allFalse = allFalseP(values);
+                if (allFalse.Item1) {
+                    this[(T)allFalse.Item2, u] = true;
+                }
+                var oneTrue = oneTrueP(values);
+                if (oneTrue.Item1) {
+                    foreach (T t in Enum.GetValues(typeof(T))) {
+                        if (! t.Equals(oneTrue.Item2)) {
+                            this[t, u] = false;
+                        }                        
+                    }
+                }
+            }  
         }
 
         private static Tuple<bool, V?> allFalseP<V>(IEnumerable<Tuple<V, bool?>> values) where V: struct {

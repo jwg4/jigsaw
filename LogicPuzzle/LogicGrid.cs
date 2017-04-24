@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace LogicPuzzle
@@ -67,7 +68,8 @@ namespace LogicPuzzle
         private static Tuple<bool, V?> allFalseP<V>(IEnumerable<Tuple<V, bool?>> values) where V: struct {
             int count = values.Count();
             int countFalse = values.Count(x => x.Item2 == false);
-            if (count == countFalse + 1) {
+            Debug.Assert(countFalse + 1 <= count);
+            if (countFalse + 1 == count) {
                 return new Tuple<bool, V?>(true, values.First(x => x.Item2 != false).Item1);
             }
             return new Tuple<bool, V?>(false, null);
@@ -75,6 +77,7 @@ namespace LogicPuzzle
 
         private static Tuple<bool, V?> oneTrueP<V>(IEnumerable<Tuple<V, bool?>> values) where V: struct {
             int countTrue = values.Count(x => x.Item2 == true);
+            Debug.Assert(countTrue <= 1);
             if (countTrue == 1) {
                 return new Tuple<bool, V?>(true, values.First(x => x.Item2 == true).Item1);
             }
